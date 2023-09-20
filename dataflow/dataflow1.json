@@ -29,7 +29,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "TreatedDateDim",
+						"referenceName": "DelimitedText2",
 						"type": "DatasetReference"
 					},
 					"name": "TreatedDateDim"
@@ -87,6 +87,9 @@
 				"          WeekOfYear = toInteger(weekOfYear(Date))) ~> DateDerivedValues",
 				"DateDerivedValues sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> TreatedDateDim",
 				"RegionDim sink(allowSchemaDrift: true,",
