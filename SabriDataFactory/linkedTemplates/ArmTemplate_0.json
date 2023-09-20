@@ -1,0 +1,447 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "SabriDataFactory"
+		},
+		"NewCityblobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'NewCityblobStorage'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/NewCityblobStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "The pure csv files ",
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('NewCityblobStorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DateDim')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Input"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "datedim.csv",
+						"container": "inputfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "DateID",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "outpoutfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RegionDim')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Input"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "regiondim.csv",
+						"container": "inputfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "RegionID",
+						"type": "String"
+					},
+					{
+						"name": "RegionName",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TreatedDateDim')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "outpoutfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TreatedRegionDim')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "outpoutfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TreatedWeatherMetric')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "outpoutfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WeathermetricFact')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "NewCityblobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Input"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "weathermetric.csv",
+						"container": "inputfiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "DateID",
+						"type": "String"
+					},
+					{
+						"name": "RegionID",
+						"type": "String"
+					},
+					{
+						"name": "AverageTemperature",
+						"type": "String"
+					},
+					{
+						"name": "Humidity",
+						"type": "String"
+					},
+					{
+						"name": "WindSpeed",
+						"type": "String"
+					},
+					{
+						"name": "Rainfall",
+						"type": "String"
+					},
+					{
+						"name": "SunshineHours",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DateDim",
+								"type": "DatasetReference"
+							},
+							"name": "DateDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "RegionDim",
+								"type": "DatasetReference"
+							},
+							"name": "RegionDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "WeathermetricFact",
+								"type": "DatasetReference"
+							},
+							"name": "Weathermetric"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "TreatedDateDim",
+								"type": "DatasetReference"
+							},
+							"name": "TreatedDateDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "TreatedRegionDim",
+								"type": "DatasetReference"
+							},
+							"name": "TreatedRegionDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "TreatedWeatherMetric",
+								"type": "DatasetReference"
+							},
+							"name": "TreatedWeatherMetric"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DateDerivedValues",
+							"description": "Year , Month , WeekOfMonth, Extraction "
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          DateID as integer,",
+						"          Date as date 'yyyy-MM-dd'",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DateDim",
+						"source(output(",
+						"          RegionID as integer,",
+						"          RegionName as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> RegionDim",
+						"source(output(",
+						"          DateID as integer,",
+						"          RegionID as integer,",
+						"          AverageTemperature as integer,",
+						"          Humidity as integer,",
+						"          WindSpeed as integer,",
+						"          Rainfall as integer,",
+						"          SunshineHours as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Weathermetric",
+						"DateDim derive(Year = toInteger(year(Date)),",
+						"          Month = toInteger(month(Date)),",
+						"          WeekOfYear = toInteger(weekOfYear(Date))) ~> DateDerivedValues",
+						"DateDerivedValues sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> TreatedDateDim",
+						"RegionDim sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> TreatedRegionDim",
+						"Weathermetric sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> TreatedWeatherMetric"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DateDim')]",
+				"[concat(variables('factoryId'), '/datasets/RegionDim')]",
+				"[concat(variables('factoryId'), '/datasets/WeathermetricFact')]",
+				"[concat(variables('factoryId'), '/datasets/TreatedDateDim')]",
+				"[concat(variables('factoryId'), '/datasets/TreatedRegionDim')]",
+				"[concat(variables('factoryId'), '/datasets/TreatedWeatherMetric')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"DateDim": {},
+									"RegionDim": {},
+									"Weathermetric": {},
+									"TreatedDateDim": {},
+									"TreatedRegionDim": {},
+									"TreatedWeatherMetric": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-20T14:01:17Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		}
+	]
+}
