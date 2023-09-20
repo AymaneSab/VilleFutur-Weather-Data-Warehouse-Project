@@ -1,0 +1,13 @@
+{
+	"name": "AzureDataLakeStorage",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "pool , to store the treated files",
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://sabristorageaccount.dfs.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEM4QzEzOTJCLUQ4MzUtNDY3Mi04QjM0LTZFMTBGQTU5MjExRV8zMjQzNDA2OC02YzYwLTQzYTAtYTZiMy0yYTZkMGJjYzU2YjYiDQp9"
+		}
+	}
+}
