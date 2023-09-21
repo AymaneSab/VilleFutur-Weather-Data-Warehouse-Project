@@ -31,17 +31,9 @@
 					"name": "DateDimension"
 				},
 				{
-					"dataset": {
-						"referenceName": "TreatedDateDim",
-						"type": "DatasetReference"
-					},
 					"name": "TreatedRegionDim"
 				},
 				{
-					"dataset": {
-						"referenceName": "TreatedWeatherMetric",
-						"type": "DatasetReference"
-					},
 					"name": "TreatedWeatherMetric"
 				}
 			],
@@ -53,8 +45,8 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          DateID as integer,",
-				"          Date as date 'yyyy-MM-dd'",
+				"          DateID as string,",
+				"          Date as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
