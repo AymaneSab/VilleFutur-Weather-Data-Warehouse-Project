@@ -7,15 +7,40 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "SabriDataFactory"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		},
 		"NewCityblobStorage_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'NewCityblobStorage'"
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sabriaymanesynapseacc.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/NewCityblobStorage')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -95,6 +120,33 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/NewCityblobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "test"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage')]"
 			]
 		},
 		{
@@ -311,7 +363,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "TreatedDateDim",
+								"referenceName": "DelimitedText2",
 								"type": "DatasetReference"
 							},
 							"name": "TreatedDateDim"
@@ -369,6 +421,9 @@
 						"          WeekOfYear = toInteger(weekOfYear(Date))) ~> DateDerivedValues",
 						"DateDerivedValues sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> TreatedDateDim",
 						"RegionDim sink(allowSchemaDrift: true,",
@@ -386,7 +441,7 @@
 				"[concat(variables('factoryId'), '/datasets/DateDim')]",
 				"[concat(variables('factoryId'), '/datasets/RegionDim')]",
 				"[concat(variables('factoryId'), '/datasets/WeathermetricFact')]",
-				"[concat(variables('factoryId'), '/datasets/TreatedDateDim')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
 				"[concat(variables('factoryId'), '/datasets/TreatedRegionDim')]",
 				"[concat(variables('factoryId'), '/datasets/TreatedWeatherMetric')]"
 			]

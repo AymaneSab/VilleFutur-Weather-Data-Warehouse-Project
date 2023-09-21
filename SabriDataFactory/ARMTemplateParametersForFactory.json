@@ -5,8 +5,14 @@
 		"factoryName": {
 			"value": "SabriDataFactory"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
 		"NewCityblobStorage_connectionString": {
 			"value": ""
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://sabriaymanesynapseacc.dfs.core.windows.net/"
 		}
 	}
 }
