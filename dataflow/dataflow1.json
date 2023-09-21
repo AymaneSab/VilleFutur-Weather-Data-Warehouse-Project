@@ -1,0 +1,106 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DateDim",
+						"type": "DatasetReference"
+					},
+					"name": "DateDim",
+					"description": "date csv "
+				},
+				{
+					"dataset": {
+						"referenceName": "RegionDim",
+						"type": "DatasetReference"
+					},
+					"name": "RegionDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "WeathermetricFact",
+						"type": "DatasetReference"
+					},
+					"name": "WeatherMetric"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LakeDateDimension",
+						"type": "DatasetReference"
+					},
+					"name": "LakeDateDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "LakeRegionDim",
+						"type": "DatasetReference"
+					},
+					"name": "LakeRegionDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "LakeWeatherMetricFact",
+						"type": "DatasetReference"
+					},
+					"name": "LakeWeatherMetricFact"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          DateID as integer,",
+				"          Date as date 'yyyy-MM-dd'",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false) ~> DateDim",
+				"source(output(",
+				"          RegionID as integer,",
+				"          RegionName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> RegionDim",
+				"source(output(",
+				"          DateID as integer,",
+				"          RegionID as integer,",
+				"          AverageTemperature as integer,",
+				"          Humidity as integer,",
+				"          WindSpeed as integer,",
+				"          Rainfall as integer,",
+				"          SunshineHours as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> WeatherMetric",
+				"DateDim sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> LakeDateDim",
+				"RegionDim sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> LakeRegionDim",
+				"WeatherMetric sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> LakeWeatherMetricFact"
+			]
+		}
+	}
+}
