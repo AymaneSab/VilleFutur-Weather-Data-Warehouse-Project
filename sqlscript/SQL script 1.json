@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE [DateDim] (\n  [DateID] Integer NOT NULL,\n  [Date] Date\n);\n\n\nCREATE TABLE [RegionDim] (\n  [RegionID] Integer NOT NULL,\n  [RegionName] Varchar(255)\n);\n\nCREATE TABLE [WeatherMetricsFact] (\n  [DateID] Integer NOT NULL,\n  [RegionID] Integer NOT NULL,\n  [AverageTemperature] Integer,\n  [Humidity] Integer,\n  [WindSpeed] Integer,\n  [Rainfall] Integer,\n  [SunshineHours] Integer\n);\n\nSELECT * FROM [RegionDim]\nSELECT * FROM [DateDim]\nSELECT * FROM [WeatherMetricsFact] \n\nDrop TABLE [RegionDim]\n\n\n\nALTER TABLE DateDim add CONSTRAINT PK_DateDim PRIMARY KEY NONCLUSTERED (DateID) NOT ENFORCED;\nALTER TABLE RegionDim add CONSTRAINT PK_RegionDim PRIMARY KEY NONCLUSTERED (RegionID) NOT ENFORCED;\nALTER TABLE WeatherMetricsFact add CONSTRAINT PK_WeatherMetricsFact PRIMARY KEY NONCLUSTERED (DateID) NOT ENFORCED;\nALTER TABLE WeatherMetricsFact add CONSTRAINT PK_WeatherMetricsFact PRIMARY KEY NONCLUSTERED (RegionID) NOT ENFORCED;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sabridedicatedpool",
+				"poolName": "sabridedicatedpool"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}

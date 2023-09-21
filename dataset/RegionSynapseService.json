@@ -1,0 +1,27 @@
+{
+	"name": "RegionSynapseService",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sabriAzureSynapseAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "RegionID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Region",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "RegionDim"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

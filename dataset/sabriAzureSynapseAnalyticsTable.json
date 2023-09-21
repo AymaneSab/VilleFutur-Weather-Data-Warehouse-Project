@@ -1,0 +1,53 @@
+{
+	"name": "sabriAzureSynapseAnalyticsTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sabriAzureSynapseAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "DateID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RegionID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AverageTemperature",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Humidity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "WindSpeed",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Rainfall",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SunshineHours",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "WeatherMetricsFact"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

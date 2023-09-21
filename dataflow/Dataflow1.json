@@ -1,0 +1,136 @@
+{
+	"name": "Dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "WeatherMetric",
+						"type": "DatasetReference"
+					},
+					"name": "WeatherMetric"
+				},
+				{
+					"dataset": {
+						"referenceName": "DateSource",
+						"type": "DatasetReference"
+					},
+					"name": "DateDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "RegionDim",
+						"type": "DatasetReference"
+					},
+					"name": "RegionDim"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "sabriAzureSynapseAnalyticsTable",
+						"type": "DatasetReference"
+					},
+					"name": "WeatherMetricFact"
+				},
+				{
+					"dataset": {
+						"referenceName": "DateSynpaseService",
+						"type": "DatasetReference"
+					},
+					"name": "DateDimension"
+				},
+				{
+					"dataset": {
+						"referenceName": "RegionSynpaseService",
+						"type": "DatasetReference"
+					},
+					"name": "RegionDimension"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          DateID as string,",
+				"          RegionID as string,",
+				"          AverageTemperature as string,",
+				"          Humidity as string,",
+				"          WindSpeed as string,",
+				"          Rainfall as string,",
+				"          SunshineHours as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> WeatherMetric",
+				"source(output(",
+				"          DateID as string,",
+				"          Date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DateDim",
+				"source(output(",
+				"          RegionID as string,",
+				"          RegionName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> RegionDim",
+				"WeatherMetric sink(allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     input(",
+				"          DateID as integer,",
+				"          RegionID as integer,",
+				"          AverageTemperature as integer,",
+				"          Humidity as integer,",
+				"          WindSpeed as integer,",
+				"          Rainfall as integer,",
+				"          SunshineHours as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> WeatherMetricFact",
+				"DateDim sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          DateID as integer,",
+				"          Date as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> DateDimension",
+				"RegionDim sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          RegionID as integer,",
+				"          RegionName as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> RegionDimension"
+			]
+		}
+	}
+}

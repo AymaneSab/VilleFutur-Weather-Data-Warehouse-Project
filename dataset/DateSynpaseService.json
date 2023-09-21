@@ -1,0 +1,27 @@
+{
+	"name": "DateSynpaseService",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sabriAzureSynapseAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "DateID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Date",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DateDim"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
