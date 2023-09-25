@@ -1,0 +1,9 @@
+{
+	"name": "sabridatabricksressourcegroup",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ada87e0c-b24a-47b0-9cdc-f8016c082ec4",
+		"tenantId": "a2e466aa-4f86-4545-b5b8-97da7c8febf3"
+	}
+}
