@@ -1,0 +1,9 @@
+{
+	"name": "SabriDataFactory",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "72afdcdd-c78a-402a-9a2b-36c31d8ef828",
+		"tenantId": "a2e466aa-4f86-4545-b5b8-97da7c8febf3"
+	}
+}
