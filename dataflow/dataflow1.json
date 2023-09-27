@@ -41,6 +41,9 @@
 				{
 					"name": "DateDerivedValues",
 					"description": "Year , Month , WeekOfMonth, Extraction "
+				},
+				{
+					"name": "regionAlterRow"
 				}
 			],
 			"scriptLines": [
@@ -73,13 +76,14 @@
 				"DateDim derive(Year = toInteger(year(Date)),",
 				"          Month = toInteger(month(Date)),",
 				"          WeekOfYear = toInteger(weekOfYear(Date))) ~> DateDerivedValues",
+				"RegionDim alterRow(upsertIf(1 == 1)) ~> regionAlterRow",
 				"DateDerivedValues sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     preCommands: [],",
 				"     postCommands: []) ~> DateDimension",
-				"RegionDim sink(allowSchemaDrift: true,",
+				"regionAlterRow sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> TreatedRegionDim",
