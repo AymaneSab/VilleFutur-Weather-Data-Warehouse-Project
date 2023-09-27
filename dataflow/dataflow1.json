@@ -1,0 +1,97 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DateDim",
+						"type": "DatasetReference"
+					},
+					"name": "DateDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "RegionDim",
+						"type": "DatasetReference"
+					},
+					"name": "RegionDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "WeathermetricFact",
+						"type": "DatasetReference"
+					},
+					"name": "Weathermetric"
+				}
+			],
+			"sinks": [
+				{
+					"name": "DateDimension"
+				},
+				{
+					"name": "TreatedRegionDim"
+				},
+				{
+					"name": "TreatedWeatherMetric"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DateDerivedValues",
+					"description": "Year , Month , WeekOfMonth, Extraction "
+				},
+				{
+					"name": "regionAlterRow"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          DateID as string,",
+				"          Date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DateDim",
+				"source(output(",
+				"          RegionID as integer,",
+				"          RegionName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> RegionDim",
+				"source(output(",
+				"          DateID as integer,",
+				"          RegionID as integer,",
+				"          AverageTemperature as integer,",
+				"          Humidity as integer,",
+				"          WindSpeed as integer,",
+				"          Rainfall as integer,",
+				"          SunshineHours as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Weathermetric",
+				"DateDim derive(Year = toInteger(year(Date)),",
+				"          Month = toInteger(month(Date)),",
+				"          WeekOfYear = toInteger(weekOfYear(Date))) ~> DateDerivedValues",
+				"RegionDim alterRow(upsertIf(1 == 1)) ~> regionAlterRow",
+				"DateDerivedValues sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> DateDimension",
+				"regionAlterRow sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> TreatedRegionDim",
+				"Weathermetric sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> TreatedWeatherMetric"
+			]
+		}
+	}
+}
