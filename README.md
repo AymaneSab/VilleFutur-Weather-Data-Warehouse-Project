@@ -57,9 +57,8 @@ As a Data Developer, your mission is to oversee the entire data pipeline, from d
 
 ## Contributors
 
-- [Your Name]
-- [Other Team Members]
+- [Aymane Sari]
 
 ## License
 
-This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the [MIT] - see the [LICENSE.md](LICENSE.md) file for details.
