@@ -1,33 +1,65 @@
 # VilleFutur Weather Data Warehouse Project
 
-## Introduction
+![Alt text](https://maghreb.simplonline.co/_next/image?url=https%3A%2F%2Fsimplonline-v3-prod.s3.eu-west-3.amazonaws.com%2Fmedia%2Fimage%2Fpng%2Fsans-titre-6506f97fa0d5a220127652.png&w=1280&q=75)
+## Overview
 
-Welcome to the VilleFutur Weather Data Warehouse project. This individual project focuses on building a robust data warehouse on Azure to collect, model, and analyze historical and current weather data for VilleFutur. The objective is to anticipate future infrastructure, urban planning, and public service needs based on meteorological insights.
+The VilleFutur Weather Data Warehouse Project aims to collect, model, and analyze historical and current meteorological data from different regions of the growing metropolis. The primary goal is to create a robust and scalable data warehouse in Azure, providing decision-makers, researchers, and urban planners with easy access to relevant weather data. This warehouse will enable informed decision-making for future infrastructure, urban development, and public services in VilleFutur.
 
-## Project Overview
+## Developer's Mission
 
-This project involves several key phases:
+As a Data Developer, your mission is to oversee the entire data pipeline, from data collection to the creation of the Azure data warehouse. Special attention should be given to GDPR compliance, historical change tracking, and ensuring data integrity and security.
 
-1. **Data Collection**: Relevant data points, including temperature, humidity, wind speed, and precipitation, have been extracted for specified years.
+## Project Phases
 
-2. **Data Integration**: Data transformation and loading processes were implemented using Data Flow and Copy Data activities to populate Synapse tables.
+### 1. Data Collection
 
-3. **Data Modeling**: Dimension tables (DateDim and RegionDim) have been created and populated, and a fact table (WeatherMetrics) has been established.
+- Extract relevant data points (temperature, humidity, wind speed, precipitation, etc.) for specified years.
 
-4. **Data Warehouse Creation**: SQL scripts define attributes for DateDim, RegionDim, and WeatherMetrics, following a star schema.
+### 2. Data Integration
 
-5. **Data Warehouse Management**: Azure Monitor and Log Analytics are utilized to monitor activities, ensure GDPR compliance, and plan regular maintenance tasks.
+- Transform data using the "Data Flow" activity.
+- Load transformed data using the "Copy Data" activity into Synapse tables.
 
-6. **Historical Changes Tracking**: A Slowly Changing Dimension (SCD) Type 1 methodology has been applied to the RegionDim table to track historical changes.
+### 3. Data Modeling
 
-## Project Repository
+- Create dimension tables (DateDim and RegionDim).
+- Populate dimension tables (generate data for DateDim, input regions for RegionDim).
+- Establish the WeatherMetrics fact table populated through the ETL process.
 
-This project is open-source and hosted on GitHub. You can access the code, documentation, and updates in the following repository: [GitHub Project](https://github.com/AymaneSab/Azure_DataWareHouse).
+### 4. Data Warehouse Creation
 
-## Connect with Me
+- Write SQL scripts defining attributes for DateDim, RegionDim, and WeatherMetrics tables.
+- Implement a star schema, selecting appropriate tables.
+- Document role and permission configurations, set up firewall rules for security.
 
-I look forward to sharing more updates as this project progresses. Feel free to connect with me if you're interested in discussing data development, Azure, or any related topics.
+### 5. Data Warehouse Management
 
-## Tags
+- Monitor warehouse activity and performance using Azure Monitor and Log Analytics.
+- Document GDPR compliance, specifying data types, sources, and purposes.
+- Schedule regular maintenance tasks, such as deleting old data.
 
-#DataAnalytics #DataWarehouse #Azure #DataDevelopment #GitHub #VilleFutur
+### 6. Historical Change Tracking
+
+- Implement Type 1 Slowly Changing Dimension (SCD) on the RegionDim table to track historical changes.
+
+## Getting Started
+
+1. Clone the repository.
+2. Follow the step-by-step guide in the `docs/` directory for setting up and executing the data warehouse pipeline.
+
+## Requirements
+
+- Azure account with necessary permissions.
+- Azure Synapse Analytics.
+- Azure Data Factory.
+- SQL Server Management Studio or similar tool.
+- ...
+
+## Contributors
+
+- [Your Name]
+- [Other Team Members]
+
+## License
+
+This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details.
