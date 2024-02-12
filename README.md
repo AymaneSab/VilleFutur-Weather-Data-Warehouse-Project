@@ -57,7 +57,7 @@ As a Data Developer, your mission is to oversee the entire data pipeline, from d
 
 ## Contributors
 
-- [Aymane Sari]
+- [Aymane Sabri]
 
 ## License
 
